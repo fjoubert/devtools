@@ -1,0 +1,68 @@
+import { ChangeEvent, useState } from 'react';
+
+export const prettify = (json: string) => {
+    return JSON.stringify(JSON.parse(json), null, 2);
+};
+
+export const minify = (json: string) => {
+    return JSON.stringify(JSON.parse(json));
+};
+
+export const escape = (json: string) => {
+    JSON.parse(json); // validate before escaping
+    return json.replace(/[\\]/g, '\\\\')
+        .replace(/[\/]/g, '\\/') // eslint-disable-line no-useless-escape
+        .replace(/[\b]/g, '\\b')
+        .replace(/[\f]/g, '\\f')
+        .replace(/[\n]/g, '\\n')
+        .replace(/[\r]/g, '\\r')
+        .replace(/[\t]/g, '\\t')
+        .replace(/[\"]/g, '\\"'); // eslint-disable-line no-useless-escape
+};
+
+export const unescape = (json: string) => {
+    let unescaped = json
+        .replace(/\\/g, '\\')
+        .replace(/\//g, '/')
+        .replace(/\\b/g, '\b')
+        .replace(/\\f/g, '\f')
+        .replace(/\\n/g, '\n')
+        .replace(/\\r/g, '\r')
+        .replace(/\\t/g, '\t')
+        .replace(/\\"/g, '"'); // eslint-disable-line no-useless-escape
+    return JSON.stringify(JSON.parse(unescaped));
+};
+
+const Json = () => {
+
+    const [value, setValue] = useState<string>(JSON.stringify({ abc: 123, def: 456, ghi: { jkl: 789 } }, null, 2));
+    const [error, setError] = useState<string>("");
+
+    const handleClick = (action: Function) => {
+        try {
+            setValue(action(value));
+            setError("");
+        } catch (e) {
+            setError(e.message);
+        }
+    };
+
+    const handleTextareaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        setValue(e.target.value);
+    };
+
+    return (
+        <>
+            <textarea value={value} onChange={handleTextareaChange} data-testid="textareadTestId"></textarea>
+            <div>
+                <button onClick={() => { handleClick(prettify); }}>Prettify</button>
+                <button onClick={() => { handleClick(minify); }}>Minify</button>
+                <button onClick={() => { handleClick(escape); }}>Escape</button>
+                <button onClick={() => { handleClick(unescape); }}>Unescape</button>
+            </div>
+            <span className="error">{error}</span>
+        </>
+    );
+};
+
+export default Json;

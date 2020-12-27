@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 
 const Uuid4 = () => {
 
@@ -10,20 +10,32 @@ const Uuid4 = () => {
                 return v.toString(16);
             });
         });
-    }
+    };
 
     const [amountToGenerate, setAmountToGenerate] = useState<number>(25);
     const [value, setValue] = useState<string>(generateUuidv4(amountToGenerate).join('\n'));
 
+    const handleClick = () => {
+        setValue(generateUuidv4(amountToGenerate).join('\n'));
+    };
+
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setAmountToGenerate(parseInt(e.target.value));
+    };
+
+    const handleTextareaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        setValue(e.target.value);
+    };
+
     return (
         <>
-            <textarea data-testid="textareadTestId" value={value} onChange={e => { setValue(e.target.value) }}></textarea>
+            <textarea value={value} onChange={handleTextareaChange} data-testid="textareadTestId"></textarea>
             <div>
-                <input data-testid="inputTestId" type="number" value={amountToGenerate} min="1" max="10000" onChange={e => { setAmountToGenerate(parseInt(e.target.value)) }} />
-                <button onClick={() => setValue(generateUuidv4(amountToGenerate).join('\n'))}>Generate UUIDs</button>
+                <input data-testid="inputTestId" type="number" value={amountToGenerate} min="1" max="10000" onChange={handleInputChange} />
+                <button onClick={handleClick}>Generate UUIDs</button>
             </div>
         </>
     );
-}
+};
 
 export default Uuid4;

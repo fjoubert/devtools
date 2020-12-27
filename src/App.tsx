@@ -7,19 +7,25 @@ import {
 } from "react-router-dom";
 import './App.css';
 import Uuid4 from './tools/uuid4';
-import UrlEncodeDecode from './tools/url-encode-decode';
+import Urls from './tools/urls';
+import Json from './tools/json';
 
 export const tools = [
+  {
+    path: "/json",
+    title: "JSON",
+    component: Json
+  },
+  {
+    path: "/urls",
+    title: "URLs",
+    component: Urls
+  },
   {
     path: "/uuids",
     title: "UUIDs",
     component: Uuid4
   },
-  {
-    path: "/url-encode-decode",
-    title: "URL encode/decode",
-    component: UrlEncodeDecode
-  }
 ];
 
 const App = () => {
@@ -48,7 +54,7 @@ const App = () => {
       </div>
     </Router >
   );
-}
+};
 
 function Home() {
   return <h2>Here goes the home page content</h2>;

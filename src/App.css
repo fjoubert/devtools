@@ -29,3 +29,8 @@ textarea {
 div > * {
   margin: 0px 4px;
 }
+
+.error {
+  color: #e9002b;
+  margin: 4px;
+}
