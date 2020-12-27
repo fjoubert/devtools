@@ -10,6 +10,7 @@
 
 nav {
   margin: 8px;
+  font-size: 10pt;
 }
 
 nav > span {
@@ -23,4 +24,8 @@ a {
 textarea {
   width: 600px;
   height: 450px;
+}
+
+div > * {
+  margin: 0px 4px;
 }

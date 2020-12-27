@@ -1,3 +1,4 @@
+import { useState } from 'react';
 
 const Uuid4 = () => {
 
@@ -11,10 +12,16 @@ const Uuid4 = () => {
         });
     }
 
+    const [amountToGenerate, setAmountToGenerate] = useState<number>(25);
+    const [value, setValue] = useState<string>(generateUuidv4(amountToGenerate).join('\n'));
+
     return (
         <>
-            <textarea defaultValue={generateUuidv4(25).join('\n')}></textarea>
-            <button onClick={generateUuidv4(25)}></button>
+            <textarea value={value} onChange={e => { setValue(e.target.value) }}></textarea>
+            <div>
+                <input type="number" value={amountToGenerate} min="1" max="10000" onChange={e => { setAmountToGenerate(parseInt(e.target.value)) }} />
+                <button onClick={() => setValue(generateUuidv4(amountToGenerate).join('\n'))}>Generate UUIDs</button>
+            </div>
         </>
     );
 }

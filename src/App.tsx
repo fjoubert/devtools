@@ -5,9 +5,10 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import './App.css';
 import Uuid4 from './tools/uuid4';
 import JsonLint from './tools/json-lint';
-import './App.css';
+import UrlEncodeDecode from './tools/url-encode-decode';
 
 const tools = [
   {
@@ -19,12 +20,19 @@ const tools = [
     path: "/json-lint",
     title: "JSON Lint",
     component: JsonLint
+  },
+  {
+    path: "/url-encode-decode",
+    title: "URL encode/decode",
+    component: UrlEncodeDecode
   }
 ];
 
 const App = () => {
+
   const routeComponents = tools.map(({ path, component }, key) => <Route exact path={path} component={component} key={key} />);
   const navComponents = tools.map((tool, key) => <span key={key}><Link to={tool.path}>{tool.title}</Link></span>);
+
   return (
     <Router>
       <div className="App">
@@ -38,11 +46,7 @@ const App = () => {
         </header>
 
         <Switch>
-
           {routeComponents}
-          {/* {tools.map((tool, index) =>
-            <Route key={index} path={tool.path} component={tool.component} />
-          )} */}
           <Route path="/">
             <Home />
           </Route>
@@ -53,7 +57,7 @@ const App = () => {
 }
 
 function Home() {
-  return <h2>Here goes the home page</h2>;
+  return <h2>Here goes the home page content</h2>;
 }
 
 export default App;
