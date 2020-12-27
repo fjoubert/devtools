@@ -7,7 +7,6 @@ import {
 } from "react-router-dom";
 import './App.css';
 import Uuid4 from './tools/uuid4';
-import JsonLint from './tools/json-lint';
 import UrlEncodeDecode from './tools/url-encode-decode';
 
 const tools = [
@@ -15,11 +14,6 @@ const tools = [
     path: "/uuids",
     title: "UUIDs",
     component: Uuid4
-  },
-  {
-    path: "/json-lint",
-    title: "JSON Lint",
-    component: JsonLint
   },
   {
     path: "/url-encode-decode",
