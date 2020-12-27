@@ -17,9 +17,9 @@ const Uuid4 = () => {
 
     return (
         <>
-            <textarea value={value} onChange={e => { setValue(e.target.value) }}></textarea>
+            <textarea data-testid="textareadTestId" value={value} onChange={e => { setValue(e.target.value) }}></textarea>
             <div>
-                <input type="number" value={amountToGenerate} min="1" max="10000" onChange={e => { setAmountToGenerate(parseInt(e.target.value)) }} />
+                <input data-testid="inputTestId" type="number" value={amountToGenerate} min="1" max="10000" onChange={e => { setAmountToGenerate(parseInt(e.target.value)) }} />
                 <button onClick={() => setValue(generateUuidv4(amountToGenerate).join('\n'))}>Generate UUIDs</button>
             </div>
         </>

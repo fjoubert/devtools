@@ -9,7 +9,7 @@ import './App.css';
 import Uuid4 from './tools/uuid4';
 import UrlEncodeDecode from './tools/url-encode-decode';
 
-const tools = [
+export const tools = [
   {
     path: "/uuids",
     title: "UUIDs",
