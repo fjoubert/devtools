@@ -7,7 +7,7 @@ test('renders nav and placeholder content', () => {
   const linkElement = screen.getByText(/Here goes the home page content/);
   expect(linkElement).toBeInTheDocument();
 
-  tools.map((tool) => {
+  tools.forEach((tool) => {
     const navElement = screen.getByText(tool.title);
     expect(navElement).toBeInTheDocument();
   });

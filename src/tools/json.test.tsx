@@ -8,7 +8,7 @@ describe('Json', () => {
     let textareaElement: HTMLElement;
 
     beforeEach(() => {
-        render(<Json />);
+        render(<Json setError={jest.fn()} clearError={jest.fn()} />);
         textareaElement = screen.getByTestId(/textareadTestId/);
     });
 

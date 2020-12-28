@@ -8,7 +8,7 @@ describe('Urls', () => {
     let textareaElement: HTMLElement;
 
     beforeEach(() => {
-        render(<Urls />);
+        render(<Urls setError={jest.fn()} clearError={jest.fn()} />);
         textareaElement = screen.getByTestId(/textareadTestId/);
     });
 

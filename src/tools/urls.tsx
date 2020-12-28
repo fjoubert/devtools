@@ -1,14 +1,14 @@
 import { ChangeEvent, useState } from 'react';
+import { ErrorHandlerProps } from '../App';
 
-const Urls = () => {
+const Urls = ({ setError, clearError }: ErrorHandlerProps) => {
 
-    const [value, setValue] = useState<string>("");
-    const [error, setError] = useState<string>("");
+    const [value, setValue] = useState<string>("1234 abcd #");
 
     const handleClick = (action: Function) => {
         try {
             setValue(action(value));
-            setError("");
+            clearError();
         } catch (e) {
             setError(e.message);
         }
@@ -18,14 +18,21 @@ const Urls = () => {
         setValue(e.target.value);
     };
 
+    const handleFocus = (e: ChangeEvent<HTMLTextAreaElement>) => e.target.select();
+
     return (
         <>
-            <textarea value={value} onChange={handleTextareaChange} data-testid="textareadTestId"></textarea>
+            <textarea
+                autoFocus
+                onFocus={handleFocus}
+                value={value} onChange={handleTextareaChange}
+                placeholder="Enter any text to encode/decode"
+                data-testid="textareadTestId">
+            </textarea>
             <div>
                 <button onClick={() => { handleClick(encodeURIComponent); }}>Encode URL</button>
                 <button onClick={() => { handleClick(decodeURIComponent); }}>Decode URL</button>
             </div>
-            <span className="error">{error}</span>
         </>
     );
 };

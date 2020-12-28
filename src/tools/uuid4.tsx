@@ -13,10 +13,10 @@ const Uuid4 = () => {
     };
 
     const [amountToGenerate, setAmountToGenerate] = useState<number>(25);
-    const [value, setValue] = useState<string>(generateUuidv4(amountToGenerate).join('\n'));
+    const [value, setValue] = useState<string>(generateUuidv4(amountToGenerate).join('\n') + '\n');
 
     const handleClick = () => {
-        setValue(generateUuidv4(amountToGenerate).join('\n'));
+        setValue(generateUuidv4(amountToGenerate).join('\n') + '\n');
     };
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -27,9 +27,17 @@ const Uuid4 = () => {
         setValue(e.target.value);
     };
 
+    const handleFocus = (e: ChangeEvent<HTMLTextAreaElement>) => e.target.select();
+
     return (
         <>
-            <textarea value={value} onChange={handleTextareaChange} data-testid="textareadTestId"></textarea>
+            <textarea
+                autoFocus
+                onFocus={handleFocus}
+                value={value} onChange={handleTextareaChange}
+                placeholder="Click Generate UUIDs"
+                data-testid="textareadTestId">
+            </textarea>
             <div>
                 <input data-testid="inputTestId" type="number" value={amountToGenerate} min="1" max="10000" onChange={handleInputChange} />
                 <button onClick={handleClick}>Generate UUIDs</button>
