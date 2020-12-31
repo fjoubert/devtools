@@ -13,7 +13,61 @@ import Base64 from './tools/base64';
 import gif404 from './images/notthedroids.gif';
 import Time from './tools/time';
 
-const Home = () => { return <h2>Here goes the home page content</h2>; };
+export const tools = [
+  {
+    path: "/base64",
+    title: "Base64",
+    description: "encode, decode",
+    Component: Base64,
+  },
+  {
+    path: "/json",
+    title: "JSON",
+    description: "prettify, minify, escape, unescape",
+    Component: Json
+  },
+  {
+    path: "/time",
+    title: "Time",
+    description: "timestamps, durations",
+    Component: Time
+  },
+  {
+    path: "/urls",
+    title: "URLs",
+    description: "encode, decode",
+    Component: Urls
+  },
+  {
+    path: "/uuids",
+    title: "UUIDs",
+    description: "generate random UUIDs",
+    Component: Uuid4
+  },
+];
+
+const Home = () => {
+  const toolElements = tools.map(({ path, title, description }, key) => {
+    if (path === '/') return null;
+    return (
+      <div className="toolCard" key={key}>
+        <Link to={path}>{title}: {description}</Link>
+      </div>);
+  });
+  return (
+    <div>
+      <h2>Here are some tools that could come in handy...</h2>
+      {toolElements}
+    </div>
+  );
+};
+
+tools.unshift({
+  path: "/",
+  title: "Home",
+  description: "",
+  Component: Home
+});
 
 const Page404 = () => (
   <>
@@ -21,39 +75,11 @@ const Page404 = () => (
     <h1>This is not the page you are looking for (404).</h1>
   </>
 );
-
-export const tools = [
-  {
-    path: "/",
-    title: "Home",
-    Component: Home
-  },
-  {
-    path: "/base64",
-    title: "Base64",
-    Component: Base64
-  },
-  {
-    path: "/json",
-    title: "JSON",
-    Component: Json
-  },
-  {
-    path: "/time",
-    title: "Time",
-    Component: Time
-  },
-  {
-    path: "/urls",
-    title: "URLs",
-    Component: Urls
-  },
-  {
-    path: "/uuids",
-    title: "UUIDs",
-    Component: Uuid4
-  },
-];
+const Footer = () => (
+  <>
+    <div id="footer"><a href="https://github.com/fjoubert/devtools">View on GitHub</a></div>
+  </>
+);
 
 const App = () => {
 
@@ -85,6 +111,7 @@ const App = () => {
           <Route component={Page404} />
         </Switch>
         <span className="error">{error}</span>
+        {Footer()}
       </div>
     </Router >
   );
