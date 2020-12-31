@@ -11,6 +11,7 @@ import Urls from './tools/urls';
 import Json from './tools/json';
 import Base64 from './tools/base64';
 import gif404 from './images/notthedroids.gif';
+import Time from './tools/time';
 
 const Home = () => { return <h2>Here goes the home page content</h2>; };
 
@@ -36,6 +37,11 @@ export const tools = [
     path: "/json",
     title: "JSON",
     Component: Json
+  },
+  {
+    path: "/time",
+    title: "Time",
+    Component: Time
   },
   {
     path: "/urls",

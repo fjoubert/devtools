@@ -34,3 +34,31 @@ div > * {
   color: #e9002b;
   margin: 4px;
 }
+
+.timeTool {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+}
+
+#inputHumanized {
+  width: 100%;
+  height: 40px;
+}
+
+.divider > button {
+  margin-left: 8px;
+}
+
+.divider {
+  margin: 8px auto;
+}
+
+.timeRow {
+  font-size: 12pt;
+  margin-top: 4px;
+}
+
+.timeRow > input {
+  width: 240px;
+}
