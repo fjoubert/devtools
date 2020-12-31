@@ -5,7 +5,7 @@ import Uuid4 from './uuid4';
 const uuidPattern = '([a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}\n?)';
 
 test('generates UUIDs', () => {
-    render(<Uuid4 />);
+    render(<Uuid4 setError={jest.fn()} clearError={jest.fn()} />);
     const buttonElement = screen.getByText(/Generate UUIDs/);
     expect(buttonElement).toBeInTheDocument();
     const inputElement = screen.getByTestId(/inputTestId/);
