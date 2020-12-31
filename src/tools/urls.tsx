@@ -1,31 +1,20 @@
-import { ChangeEvent, useState } from 'react';
-import { ErrorHandlerProps } from '../App';
+import { useState } from 'react';
+import withErrorHandling, { ErrorHandlerProps } from '../util/withErrorHandingWrapper';
 
-const Urls = ({ setError, clearError }: ErrorHandlerProps) => {
+const Urls = (errorHandlerProps: ErrorHandlerProps) => {
 
     const [value, setValue] = useState<string>("1234 abcd #");
 
-    const handleClick = (action: Function) => {
-        try {
-            setValue(action(value));
-            clearError();
-        } catch (e) {
-            setError(e.message);
-        }
-    };
-
-    const handleTextareaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        setValue(e.target.value);
-    };
-
-    const handleFocus = (e: ChangeEvent<HTMLTextAreaElement>) => e.target.select();
+    const handleClick = withErrorHandling((action: Function) => {
+        setValue(action(value));
+    }, errorHandlerProps);
 
     return (
         <>
             <textarea
                 autoFocus
-                onFocus={handleFocus}
-                value={value} onChange={handleTextareaChange}
+                onFocus={(e) => e.target.select()}
+                value={value} onChange={(e) => setValue(e.target.value)}
                 placeholder="Enter any text to encode/decode"
                 data-testid="textareadTestId">
             </textarea>

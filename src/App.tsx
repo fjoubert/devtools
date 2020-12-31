@@ -55,11 +55,6 @@ export const tools = [
   },
 ];
 
-export interface ErrorHandlerProps {
-  setError: Function;
-  clearError: Function;
-}
-
 const App = () => {
 
   const [error, setError] = useState<string>("");

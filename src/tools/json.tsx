@@ -1,5 +1,5 @@
-import { ChangeEvent, useState } from 'react';
-import { ErrorHandlerProps } from '../App';
+import { useState } from 'react';
+import withErrorHandling, { ErrorHandlerProps } from '../util/withErrorHandingWrapper';
 
 export const prettify = (json: string) => {
     return JSON.stringify(JSON.parse(json), null, 2);
@@ -34,31 +34,20 @@ export const unescape = (json: string) => {
     return JSON.stringify(JSON.parse(unescaped));
 };
 
-const Json = ({ setError, clearError }: ErrorHandlerProps) => {
+const Json = (errorHandlerProps: ErrorHandlerProps) => {
 
     const [value, setValue] = useState<string>(JSON.stringify({ abc: 123, def: 456, ghi: { jkl: 789 } }, null, 2));
 
-    const handleClick = (action: Function) => {
-        try {
-            setValue(action(value));
-            clearError();
-        } catch (e) {
-            setError(e.message);
-        }
-    };
-
-    const handleTextareaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        setValue(e.target.value);
-    };
-
-    const handleFocus = (e: ChangeEvent<HTMLTextAreaElement>) => e.target.select();
+    const handleClick = withErrorHandling((action: Function) => {
+        setValue(action(value));
+    }, errorHandlerProps);
 
     return (
         <>
             <textarea
                 autoFocus
-                onFocus={handleFocus}
-                value={value} onChange={handleTextareaChange}
+                onFocus={(e) => e.target.select()}
+                value={value} onChange={(e) => setValue(e.target.value)}
                 placeholder="Enter a JSON string and click a button"
                 data-testid="textareadTestId">
             </textarea>

@@ -1,29 +1,19 @@
-import { ChangeEvent, useState } from 'react';
+import { useState } from 'react';
 import { toByteArray, fromByteArray } from 'base64-js';
-import { ErrorHandlerProps } from '../App';
+import withErrorHandling, { ErrorHandlerProps } from '../util/withErrorHandingWrapper';
 
-const Base64 = ({ setError, clearError }: ErrorHandlerProps) => {
+const Base64 = (errorHandlerProps: ErrorHandlerProps) => {
 
     const [value, setValue] = useState<string>("1234abcd");
 
-    const handleEncodeClick = () => {
-        try {
-            setValue(fromByteArray(new TextEncoder().encode(value)));
-            clearError();
-        } catch (e) {
-            setError(e.message);
-        }
-    };
+    const handleEncodeClick = withErrorHandling(() => {
+        setValue(fromByteArray(new TextEncoder().encode(value)));
+    }, errorHandlerProps);
 
-    const handleDecodeClick = () => {
-        try {
-            validateBase64(value);
-            setValue(new TextDecoder('utf-8').decode(toByteArray(value)));
-            clearError();
-        } catch (e) {
-            setError(e.message);
-        }
-    };
+    const handleDecodeClick = withErrorHandling(() => {
+        validateBase64(value);
+        setValue(new TextDecoder('utf-8').decode(toByteArray(value)));
+    }, errorHandlerProps);
 
     function validateBase64(str: string) {
         const format = /^[a-zA-Z0-9+/_-]*={0,2}$/;
@@ -33,18 +23,12 @@ const Base64 = ({ setError, clearError }: ErrorHandlerProps) => {
         }
     }
 
-    const handleTextareaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        setValue(e.target.value);
-    };
-
-    const handleFocus = (e: ChangeEvent<HTMLTextAreaElement>) => e.target.select();
-
     return (
         <>
             <textarea
                 autoFocus
-                onFocus={handleFocus}
-                value={value} onChange={handleTextareaChange}
+                onFocus={(e) => e.target.select()}
+                value={value} onChange={(e) => setValue(e.target.value)}
                 placeholder="Enter any text to encode/decode"
                 data-testid="textareadTestId">
             </textarea>

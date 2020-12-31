@@ -1,7 +1,7 @@
-import { ChangeEvent, useState, useEffect, useCallback } from 'react';
-import { ErrorHandlerProps } from '../App';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { DateTime, Duration } from 'luxon';
 import HumanizeDuration from 'humanize-duration';
+import withErrorHandling, { ErrorHandlerProps } from '../util/withErrorHandingWrapper';
 
 interface ITimestampsProps {
     timestamp: DateTime,
@@ -15,10 +15,15 @@ interface ITimestampsProps {
 interface IDurationsProps {
     seconds: number,
     formattedString: string,
-    humanized: string;
+    humanized: string,
 }
 
-const Time = ({ setError, clearError }: ErrorHandlerProps) => {
+const maxTimestamp = 999999999999;
+
+const Time = (errorHandlerProps: ErrorHandlerProps) => {
+
+    const [timeFormat, setTimeFormat] = useState<string>("yyyy-MM-dd HH:mm:ss.SSS");
+    const [durationFormat, setDurationFormat] = useState<string>("h:mm:ss");
 
     const [timestamps, setTimestamps] = useState<ITimestampsProps>({
         timestamp: DateTime.utc(),
@@ -29,110 +34,63 @@ const Time = ({ setError, clearError }: ErrorHandlerProps) => {
         formattedString: '',
     });
     const [durations, setDurations] = useState<IDurationsProps>({
-        seconds: 60000,
+        seconds: 0,
         formattedString: '',
-        humanized: ''
+        humanized: '',
     });
-    const [timeFormat, setTimeFormat] = useState<string>("yyyy-MM-dd HH:mm:ss.SSS");
-    const [durationFormat, setDurationFormat] = useState<string>("h:mm:ss");
-
-    const computeTimestamps = useCallback((unixTimestamp: number) => {
-        let timestamp = DateTime.fromSeconds(unixTimestamp);
-        setTimestamps({
-            timestamp: timestamp,
-            unixTimestamp: unixTimestamp,
-            isoTimestamp: timestamp.toISO(),
-            RFC2822: timestamp.toRFC2822(),
-            localeString: timestamp.toLocaleString(DateTime.DATETIME_FULL_WITH_SECONDS),
-            formattedString: timestamp.toFormat(timeFormat)
-        });
-    }, [timeFormat]);
-
-    const computeDurations = useCallback((seconds: number) => {
-        setDurations({
-            seconds: seconds,
-            formattedString: Duration.fromMillis(seconds * 1000).toFormat(durationFormat),
-            humanized: HumanizeDuration(seconds * 1000)
-        });
-    }, [durationFormat]);
-
-    const setNow = () => {
-        computeTimestamps(DateTime.utc().toSeconds());
-    };
 
     useEffect(() => {
-        computeTimestamps(DateTime.utc().toSeconds());
-        computeDurations(60000);
-    }, [computeTimestamps, computeDurations]);
+        setTimestamps(computeTimestamps(DateTime.utc().toSeconds(), timeFormat));
+        setDurations(computeDurations(7201, durationFormat));
+    }, [durationFormat, timeFormat]);
 
-    const handleUnixInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-        try {
-            computeTimestamps(parseInt(e.target.value));
-            clearError();
-        } catch (e) {
-            setError(e.message);
-        }
+    const setNow = () => {
+        setTimestamps(computeTimestamps(DateTime.utc().toSeconds(), timeFormat));
     };
 
-    const handleTimeISOInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-        try {
-            let newDateTime = DateTime.fromISO(e.target.value);
-            if (!newDateTime.isValid) {
-                setTimestamps({
-                    ...timestamps,
-                    isoTimestamp: e.target.value
-                });
-                throw new Error(newDateTime.invalidExplanation!);
-            }
-            computeTimestamps(newDateTime.toSeconds());
-            clearError();
-        } catch (e) {
-            setError(e.message);
-        }
-    };
+    const handleUnixInputChange = withErrorHandling((e: ChangeEvent<HTMLInputElement>) => {
+        setTimestamps(computeTimestamps(parseInt(e.target.value), timeFormat));
+    }, errorHandlerProps);
 
-    const handleRFC2822InputChange = (e: ChangeEvent<HTMLInputElement>) => {
-        try {
-            let newDateTime = DateTime.fromRFC2822(e.target.value);
-            if (!newDateTime.isValid) {
-                setTimestamps({
-                    ...timestamps,
-                    RFC2822: e.target.value
-                });
-                throw new Error(newDateTime.invalidExplanation!);
-            }
-            computeTimestamps(newDateTime.toSeconds());
-            clearError();
-        } catch (e) {
-            setError(e.message);
+    const handleTimeISOInputChange = withErrorHandling((e: ChangeEvent<HTMLInputElement>) => {
+        let newDateTime = DateTime.fromISO(e.target.value);
+        if (!newDateTime.isValid) {
+            setTimestamps({
+                ...timestamps,
+                isoTimestamp: e.target.value
+            });
+            throw new Error(newDateTime.invalidExplanation!);
         }
-    };
+        setTimestamps(computeTimestamps(newDateTime.toSeconds(), timeFormat));
+    }, errorHandlerProps);
 
-    const handleTimeFormattedInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-        try {
-            let newDateTime = DateTime.fromFormat(e.target.value, timeFormat);
-            if (!newDateTime.isValid) {
-                setTimestamps({
-                    ...timestamps,
-                    formattedString: e.target.value
-                });
-                throw new Error(newDateTime.invalidExplanation!);
-            }
-            computeTimestamps(newDateTime.toSeconds());
-            clearError();
-        } catch (e) {
-            setError(e.message);
+    const handleRFC2822InputChange = withErrorHandling((e: ChangeEvent<HTMLInputElement>) => {
+        let newDateTime = DateTime.fromRFC2822(e.target.value);
+        if (!newDateTime.isValid) {
+            setTimestamps({
+                ...timestamps,
+                RFC2822: e.target.value
+            });
+            throw new Error(newDateTime.invalidExplanation!);
         }
-    };
+        setTimestamps(computeTimestamps(newDateTime.toSeconds(), timeFormat));
+    }, errorHandlerProps);
 
-    const handleDurationSecondsInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-        try {
-            computeDurations(parseInt(e.target.value));
-            clearError();
-        } catch (e) {
-            setError(e.message);
+    const handleTimeFormattedInputChange = withErrorHandling((e: ChangeEvent<HTMLInputElement>) => {
+        let newDateTime = DateTime.fromFormat(e.target.value, timeFormat);
+        if (!newDateTime.isValid) {
+            setTimestamps({
+                ...timestamps,
+                formattedString: e.target.value
+            });
+            throw new Error(newDateTime.invalidExplanation!);
         }
-    };
+        setTimestamps(computeTimestamps(newDateTime.toSeconds(), timeFormat));
+    }, errorHandlerProps);
+
+    const handleDurationSecondsInputChange = withErrorHandling((e: ChangeEvent<HTMLInputElement>) => {
+        setDurations(computeDurations(parseInt(e.target.value), durationFormat));
+    }, errorHandlerProps);
 
     const handleFocus = (e: ChangeEvent<HTMLInputElement>) => e.target.select();
     const handleTextareaFocus = (e: ChangeEvent<HTMLTextAreaElement>) => e.target.select();
@@ -146,9 +104,11 @@ const Time = ({ setError, clearError }: ErrorHandlerProps) => {
                     id="inputUnix"
                     autoFocus
                     type="text"
+                    min="0"
+                    max={maxTimestamp}
                     value={timestamps.unixTimestamp}
                     onChange={handleUnixInputChange}
-                    onFocus={handleFocus} />
+                />
             </div>
             <div className="timeRow">
                 <label htmlFor="inputFormat">Format</label>
@@ -158,7 +118,6 @@ const Time = ({ setError, clearError }: ErrorHandlerProps) => {
                     type="text"
                     value={timeFormat}
                     onChange={(e) => setTimeFormat(e.target.value)}
-                    onFocus={handleFocus}
                 />
             </div>
             <div className="timeRow">
@@ -196,7 +155,7 @@ const Time = ({ setError, clearError }: ErrorHandlerProps) => {
                 <input
                     id="inputDurationSeconds"
                     type="text"
-                    value={durations.seconds}
+                    value={durations!.seconds}
                     onChange={handleDurationSecondsInputChange}
                     onFocus={handleFocus}
                 />
@@ -209,7 +168,6 @@ const Time = ({ setError, clearError }: ErrorHandlerProps) => {
                     type="text"
                     value={durationFormat}
                     onChange={(e) => setDurationFormat(e.target.value)}
-                    onFocus={handleFocus}
                 />
             </div>
             <div className="timeRow">
@@ -217,7 +175,7 @@ const Time = ({ setError, clearError }: ErrorHandlerProps) => {
                 <input
                     id="inputFormattedDurationString"
                     type="text"
-                    defaultValue={durations.formattedString}
+                    defaultValue={durations!.formattedString}
                     onFocus={handleFocus}
                 />
             </div>
@@ -225,11 +183,41 @@ const Time = ({ setError, clearError }: ErrorHandlerProps) => {
             <label className="divider" htmlFor="inputHumanized">Humanized</label>
             <textarea
                 id="inputHumanized"
-                defaultValue={durations.humanized}
+                defaultValue={durations!.humanized}
                 onFocus={handleTextareaFocus}
             />
         </div>
     );
+};
+
+function computeDurations(seconds: number, durationFormat: string) {
+    let newSeconds = seconds;
+    if (isNaN(seconds)) {
+        newSeconds = 0;
+    }
+    return {
+        seconds: seconds,
+        formattedString: Duration.fromMillis(newSeconds * 1000).toFormat(durationFormat),
+        humanized: HumanizeDuration(newSeconds * 1000)
+    };
+};
+
+const computeTimestamps = (seconds: number, timeFormat: string) => {
+    let newSeconds = seconds;
+    if (isNaN(seconds)) {
+        newSeconds = 0;
+    } else if (seconds > maxTimestamp) {
+        newSeconds = maxTimestamp;
+    }
+    let timestamp = DateTime.fromSeconds(newSeconds);
+    return {
+        timestamp: timestamp,
+        unixTimestamp: newSeconds,
+        isoTimestamp: timestamp.toISO(),
+        RFC2822: timestamp.toRFC2822(),
+        localeString: timestamp.toLocaleString(DateTime.DATETIME_FULL_WITH_SECONDS),
+        formattedString: timestamp.toFormat(timeFormat)
+    };
 };
 
 export default Time;

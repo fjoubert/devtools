@@ -1,6 +1,7 @@
 import { ChangeEvent, useState } from 'react';
+import withErrorHandling, { ErrorHandlerProps } from '../util/withErrorHandingWrapper';
 
-const Uuid4 = () => {
+const Uuid4 = (errorHandlerProps: ErrorHandlerProps) => {
 
     const generateUuidv4 = (n: number) => {
         return [...Array(n)].map(() => {
@@ -19,22 +20,20 @@ const Uuid4 = () => {
         setValue(generateUuidv4(amountToGenerate).join('\n') + '\n');
     };
 
-    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setAmountToGenerate(parseInt(e.target.value));
-    };
-
-    const handleTextareaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        setValue(e.target.value);
-    };
-
-    const handleFocus = (e: ChangeEvent<HTMLTextAreaElement>) => e.target.select();
+    const handleInputChange = withErrorHandling((e: ChangeEvent<HTMLInputElement>) => {
+        let newAmount = parseInt(e.target.value);
+        if (isNaN(newAmount)) {
+            newAmount = 1;
+        }
+        setAmountToGenerate(newAmount);
+    }, errorHandlerProps);
 
     return (
         <>
             <textarea
                 autoFocus
-                onFocus={handleFocus}
-                value={value} onChange={handleTextareaChange}
+                onFocus={(e) => e.target.select()}
+                value={value} onChange={(e) => setValue(e.target.value)}
                 placeholder="Click Generate UUIDs"
                 data-testid="textareadTestId">
             </textarea>
