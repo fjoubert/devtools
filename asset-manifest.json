@@ -1,23 +1,23 @@
 {
   "files": {
     "main.css": "/devtools/static/css/main.1acc2c2d.chunk.css",
-    "main.js": "/devtools/static/js/main.4c7a337d.chunk.js",
-    "main.js.map": "/devtools/static/js/main.4c7a337d.chunk.js.map",
+    "main.js": "/devtools/static/js/main.be745fcf.chunk.js",
+    "main.js.map": "/devtools/static/js/main.be745fcf.chunk.js.map",
     "runtime-main.js": "/devtools/static/js/runtime-main.b3fa19e2.js",
     "runtime-main.js.map": "/devtools/static/js/runtime-main.b3fa19e2.js.map",
-    "static/js/2.21094d7d.chunk.js": "/devtools/static/js/2.21094d7d.chunk.js",
-    "static/js/2.21094d7d.chunk.js.map": "/devtools/static/js/2.21094d7d.chunk.js.map",
+    "static/js/2.30530e9a.chunk.js": "/devtools/static/js/2.30530e9a.chunk.js",
+    "static/js/2.30530e9a.chunk.js.map": "/devtools/static/js/2.30530e9a.chunk.js.map",
     "static/js/3.e22ea364.chunk.js": "/devtools/static/js/3.e22ea364.chunk.js",
     "static/js/3.e22ea364.chunk.js.map": "/devtools/static/js/3.e22ea364.chunk.js.map",
     "index.html": "/devtools/index.html",
     "static/css/main.1acc2c2d.chunk.css.map": "/devtools/static/css/main.1acc2c2d.chunk.css.map",
-    "static/js/2.21094d7d.chunk.js.LICENSE.txt": "/devtools/static/js/2.21094d7d.chunk.js.LICENSE.txt",
+    "static/js/2.30530e9a.chunk.js.LICENSE.txt": "/devtools/static/js/2.30530e9a.chunk.js.LICENSE.txt",
     "static/media/notthedroids.6cb9be78.gif": "/devtools/static/media/notthedroids.6cb9be78.gif"
   },
   "entrypoints": [
     "static/js/runtime-main.b3fa19e2.js",
-    "static/js/2.21094d7d.chunk.js",
+    "static/js/2.30530e9a.chunk.js",
     "static/css/main.1acc2c2d.chunk.css",
-    "static/js/main.4c7a337d.chunk.js"
+    "static/js/main.be745fcf.chunk.js"
   ]
 }
