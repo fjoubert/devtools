@@ -77,7 +77,10 @@ const Page404 = () => (
 );
 const Footer = () => (
   <>
-    <div id="footer"><a href="https://github.com/fjoubert/devtools">View on GitHub</a></div>
+    <div id="footer">
+      <span>No ads, no tracking, ever.</span>
+      <a href="https://github.com/fjoubert/devtools">View on GitHub</a>
+    </div>
   </>
 );
 
