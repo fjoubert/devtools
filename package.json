@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "author": "Francois Joubert <francoisjj@gmail.com>",
+  "homepage": "http://fjoubert.github.io/devtools",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",
@@ -23,6 +24,8 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=./test-utils/custom-test-env.js",
@@ -49,6 +52,7 @@
   "devDependencies": {
     "@types/humanize-duration": "^3.18.1",
     "@types/luxon": "^1.25.0",
-    "@types/react-router-dom": "^5.1.6"
+    "@types/react-router-dom": "^5.1.6",
+    "gh-pages": "^3.1.0"
   }
 }
