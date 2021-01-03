@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "author": "Francois Joubert <francoisjj@gmail.com>",
-  "homepage": "http://fjoubert.github.io/devtools",
+  "homepage": "https://fjoubert.github.io/devtools",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",
