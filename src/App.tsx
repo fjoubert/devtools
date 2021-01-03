@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  BrowserRouter as Router,
+  HashRouter as Router, // HashRouter to work with github pages
   Switch,
   Route,
   Link
