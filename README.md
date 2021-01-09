@@ -25,6 +25,7 @@ This project has no tracking or ads, now or ever.
  - Strip HTML Tags
  - Grep Text
  - Find my ip
+ - JWT decoder
 
 ## Bootstrapped with Create React App
 
