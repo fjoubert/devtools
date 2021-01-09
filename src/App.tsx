@@ -9,6 +9,7 @@ import './App.css';
 import Uuid4 from './tools/uuid4';
 import Urls from './tools/urls';
 import Json from './tools/json';
+import Jwt from './tools/jwt';
 import Base64 from './tools/base64';
 import gif404 from './images/notthedroids.gif';
 import Time from './tools/time';
@@ -25,6 +26,12 @@ export const tools = [
     title: "JSON",
     description: "prettify, minify, escape, unescape",
     Component: Json
+  },
+  {
+    path: "/jwt",
+    title: "JWT",
+    description: "decode",
+    Component: Jwt
   },
   {
     path: "/time",
